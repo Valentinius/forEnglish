@@ -21,13 +21,14 @@ class VideoData2:
         self.code = re.findall(r'(?<=v=|e/){1}[^\?]+(?=\?{0,1})', url)
         print(self.code)
         self.yt = YouTube(self.url)
-        self.subs = YouTubeTranscriptApi.get_transcript(self.code[0])
+        self.subs = YouTubeTranscriptApi.get_transcript(self.code[0], languages=['en'])
         self.name = self.yt.title
         self.duration = self.yt.length
         self.text = self._get_subs_text()
         self.correct_video_text = self._get_correct_video_text()
         self.sentences = tokenize.sent_tokenize(self.correct_video_text)
-        self.correct_video_sentences = self._get_correct_video_sentences()
+        #self.correct_video_sentences = self._get_correct_video_sentences()
+        self.correct_video_sentences = self.sentences
         self.not_words, self.words, self.indexes = self._get_unique_words()
         self.keywords = list()
         self.questions = set()
