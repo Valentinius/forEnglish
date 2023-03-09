@@ -93,7 +93,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self._save_keywords()
             self.words_list.clear()
             self.keywords_list.clear()
-            self.words_list.addItems(self.videos[idx].words - self.videos[idx].keywords)
+            self.words_list.addItems(word for word in self.videos[idx].words if word not in self.videos[idx].keywords)
             self.keywords_list.addItems(self.videos[idx].keywords)
 
     def _word_double_clicked(self, item):
@@ -127,15 +127,21 @@ class MainWindow(QtWidgets.QMainWindow):
 
         idx = self.video_selector_combobox.text_box.currentIndex()
         word = item.text()
-        text = self.videos[idx].text
+        sentences = self.videos[idx].correct_video_sentences
+        #text = self.videos[idx].text
 
-        pos = text.find(word)
-        while pos > -1:
-            find_start = pos + 1
-            start = pos - 50 if pos >= 50 else 0
-            end = pos + 50 if pos + 50 < len(text) else len(text)
-            self.context_list.addItem(f'<b>{text[start:end]}</b>')
-            pos = text.find(word, find_start)
+        sentences_idx = self.videos[idx].indexes[self.videos[idx].words.index(word)];
+
+        for item in sentences_idx:
+            self.context_list.addItem(sentences[item])
+
+        #pos = text.find(word)
+        #while pos > -1:
+        #    find_start = pos + 1
+        #    start = pos - 50 if pos >= 50 else 0
+        #    end = pos + 50 if pos + 50 < len(text) else len(text)
+        #    self.context_list.addItem(f'<b>{text[start:end]}</b>')
+        #    pos = text.find(word, find_start)
 
     def _add_button_clicked(self):
         """

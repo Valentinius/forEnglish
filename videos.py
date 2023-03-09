@@ -1,6 +1,7 @@
 import pickle
 
-from video_data import VideoData
+#from video_data import VideoData
+from video_data_2 import VideoData2
 
 
 class Videos:
@@ -9,7 +10,7 @@ class Videos:
 
     def add_video(self, url: str):
         if url not in self.videos:
-            self.videos.append(VideoData(url))
+            self.videos.append(VideoData2(url))
 
     def remove_video(self, url: str):
         self.videos.remove(url)
