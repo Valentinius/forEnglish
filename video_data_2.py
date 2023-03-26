@@ -11,13 +11,14 @@ from deepmultilingualpunctuation import PunctuationModel
 from gingerit.gingerit import GingerIt
 import numpy as np
 
+my_tool = language_tool_python.LanguageTool('en-US')
+
 model = PunctuationModel(model="oliverguhr/fullstop-punctuation-multilingual-sonar-base")
 
 
 class VideoData2:
     def __init__(self, url: str):
         self.url = url
-        self.my_tool = language_tool_python.LanguageTool('en-US')
         self.code = re.findall(r'(?<=v=|e/){1}[^\?]+(?=\?{0,1})', url)
         print(self.code)
         self.yt = YouTube(self.url)
@@ -51,10 +52,10 @@ class VideoData2:
 
         :return:
         """
-        correct_text = self.my_tool.correct(self.text)
+        correct_text = my_tool.correct(self.text)
 
         result = model.restore_punctuation(self.text)
-        result = self.my_tool.correct(result)
+        result = my_tool.correct(result)
         return result
 
     def _get_correct_video_sentences(self):
