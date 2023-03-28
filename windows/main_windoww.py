@@ -55,6 +55,10 @@ class MainWindow(QtWidgets.QMainWindow):
         #save_load_buttons_splitter.addWidget(self.save_words_button)
         #save_load_buttons_splitter.addWidget(self.load_videos_data_button)
 
+        self.show_text_button = QtWidgets.QPushButton()
+        self.show_text_button.setText("Show all text")
+
+
         settings_splitter_layout.addWidget(self.video_selector_combobox, 0, 0, 2, 1)
         settings_splitter_layout.addWidget(all_buttons_loader, 2, 0)
         #settings_splitter_layout.addWidget(add_delete_buttons_splitter, 2, 0)
@@ -110,6 +114,9 @@ class MainWindow(QtWidgets.QMainWindow):
         windows_splitter.addWidget(self.group_box_main)
         windows_splitter.addWidget(QtWidgets.QLabel("Words from video: "))
         windows_splitter.addWidget(words_splitter)
+
+        self.show_text_button.setEnabled(False)
+        windows_splitter.addWidget(self.show_text_button)
 
         main_layout.addWidget(windows_splitter, 2)
 
@@ -221,6 +228,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.questions_list.itemDoubleClicked.connect(self._ques_double_clicked)
         self.questions_list.itemClicked.connect(self._ques_clicked)
         self.delete_ques_button.clicked.connect(self._delete_ques_button_clicked)
+        self.show_text_button.clicked.connect(self._show_text_button_clicked)
 
     def _video_changed(self, idx):
         """
@@ -242,7 +250,12 @@ class MainWindow(QtWidgets.QMainWindow):
             self.keywords_list.addItems(self.videos[idx].keywords)
             self.questions_list.addItems(self.videos[idx].questions)
             self.delete_ques_button.setEnabled(False)
+            self.show_text_button.setEnabled(True)
 
+    def _show_text_button_clicked(self):
+        idx = self.video_selector_combobox.text_box.currentIndex()
+
+        self.keywords_list_2.setText(self.videos[idx].correct_video_text)
     def _word_double_clicked(self, item):
         """
         Функция определяет действия после двойного нажатия мышью на слово в окне слов.
