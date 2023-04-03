@@ -59,10 +59,7 @@ class VideoData2:
         #result = model.restore_punctuation(self.text)
 
         #querystring = {"text": res.text}
-        #headers = {
-        #    "X-RapidAPI-Key": "41f7b5275cmsh968b04d97a74f92p18a523jsnb5c26fed1c83",
-        #    "X-RapidAPI-Host": "ginger3.p.rapidapi.com"
-        #}
+        
         #response = requests.request("GET", url, headers=headers, params=querystring)
 
         #correct_text = json.loads(response.text)
