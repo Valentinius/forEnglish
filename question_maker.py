@@ -1,8 +1,8 @@
 import grammar_checker
-from textacy.spacier import utils
-from textacy.spacier import utils as spacy_utils
-import spacy
-import re
+#from textacy.spacier import utils
+#from textacy.spacier import utils as spacy_utils
+#import spacy
+#import re
 import difflib
 
 

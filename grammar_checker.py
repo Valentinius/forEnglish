@@ -1,7 +1,7 @@
-#from gingerit.gingerit import GingerIt
+from gingerit.gingerit import GingerIt
 
-#parser = GingerIt()
+parser = GingerIt()
 
 
-#def correct_grammar_sentence(sent):
-#    return parser.parse(sent)['result']
+def correct_grammar_sentence(sent):
+    return parser.parse(sent)['result']

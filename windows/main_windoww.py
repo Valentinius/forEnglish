@@ -1,10 +1,10 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from custom_objects import EditPanel
 from videos import Videos
-#import grammar_checker
+import grammar_checker
 #from video_data_2 import my_tool
 import question_maker
-import random
+#import random
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
@@ -388,14 +388,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tb_sentence.setText(self.keywords_list_2.toPlainText().replace(".", ""))
 
     def _button_check_grammar_sentence_clicked(self):
-        return
+        #return
         #self.tb_sentence.setText(my_tool.correct(self.tb_sentence.toPlainText()))
-        #self.tb_sentence.setText(grammar_checker.correct_grammar_sentence(self.tb_sentence.toPlainText()))
+        self.tb_sentence.setText(grammar_checker.correct_grammar_sentence(self.tb_sentence.toPlainText()))
 
     def _button_check_grammar_question_clicked(self):
-        return
+        #return
         #self.tb_question.setText(my_tool.correct(self.tb_question.toPlainText()))
-        #self.tb_question.setText(grammar_checker.correct_grammar_sentence(self.tb_question.toPlainText()))
+        self.tb_question.setText(grammar_checker.correct_grammar_sentence(self.tb_question.toPlainText()))
 
     def _button_get_questions_clicked(self):
         questions = question_maker.get_questions(self.tb_sentence.toPlainText())
