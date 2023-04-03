@@ -2,19 +2,18 @@ import re
 
 from youtube_transcript_api import YouTubeTranscriptApi
 from pytube import YouTube
-from nltk.stem import PorterStemmer
+#from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from nltk import tokenize
-import nltk
-import language_tool_python
-from deepmultilingualpunctuation import PunctuationModel
-from gingerit.gingerit import GingerIt
+#import nltk
+#import language_tool_python
+import requests
+import json
+
+#from gingerit.gingerit import GingerIt
 import numpy as np
 
-my_tool = language_tool_python.LanguageTool('en-US')
-
-model = PunctuationModel(model="oliverguhr/fullstop-punctuation-multilingual-sonar-base")
-
+#my_tool = language_tool_python.LanguageTool('en-US')
 
 class VideoData2:
     def __init__(self, url: str):
@@ -52,18 +51,32 @@ class VideoData2:
 
         :return:
         """
-        correct_text = my_tool.correct(self.text)
+        #correct_text = my_tool.correct(self.text)
+        url = "https://ginger3.p.rapidapi.com/correctAndRephrase"
 
-        result = model.restore_punctuation(self.text)
-        result = my_tool.correct(result)
+        data = {"text": self.text}
+        res = requests.post('http://bark.phon.ioc.ee/punctuator', data=data)
+        #result = model.restore_punctuation(self.text)
+
+        querystring = {"text": res.text}
+        headers = {
+            "X-RapidAPI-Key": "41f7b5275cmsh968b04d97a74f92p18a523jsnb5c26fed1c83",
+            "X-RapidAPI-Host": "ginger3.p.rapidapi.com"
+        }
+        response = requests.request("GET", url, headers=headers, params=querystring)
+
+        correct_text = json.loads(response.text)
+
+        #result = my_tool.correct(res.text)
+        result = correct_text['data']['text']
         return result
 
-    def _get_correct_video_sentences(self):
-        parser = GingerIt()
-        correct_sentences = []
-        for sentence in self.sentences:
-            correct_sentences.append(parser.parse(sentence)['result'])
-        return correct_sentences
+    #def _get_correct_video_sentences(self):
+    #    parser = GingerIt()
+    #    correct_sentences = []
+    #    for sentence in self.sentences:
+    #        correct_sentences.append(parser.parse(sentence)['result'])
+    #    return correct_sentences
 
     def _get_unique_words(self):
         """
