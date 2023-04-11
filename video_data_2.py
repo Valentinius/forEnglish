@@ -13,7 +13,7 @@ import json
 #from gingerit.gingerit import GingerIt
 import numpy as np
 
-my_tool = language_tool_python.LanguageTool('en-US')
+my_tool = language_tool_python.LanguageTool('en-EN')
 
 class VideoData2:
     def __init__(self, url: str):
@@ -59,7 +59,10 @@ class VideoData2:
         #result = model.restore_punctuation(self.text)
 
         #querystring = {"text": res.text}
-        
+        #headers = {
+        #    "X-RapidAPI-Key": "41f7b5275cmsh968b04d97a74f92p18a523jsnb5c26fed1c83",
+        #    "X-RapidAPI-Host": "ginger3.p.rapidapi.com"
+        #}
         #response = requests.request("GET", url, headers=headers, params=querystring)
 
         #correct_text = json.loads(response.text)
