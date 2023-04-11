@@ -6,6 +6,34 @@ import grammar_checker
 import question_maker
 #import random
 
+class Ui_MainWindow(object):
+    def __init__(self):
+        self.centralwidget = None
+        self.label = None
+        #self.movie = None
+
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        #MainWindow.resize(250, 250)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+
+        # create label
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        #self.label.setGeometry(QtCore.QRect(200, 200, 200, 200))
+        #self.label.setMinimumSize(QtCore.QSize(200, 200))
+        #self.label.setMaximumSize(QtCore.QSize(200, 200))
+        self.label.setText("Please, wait while we loading video data")
+        self.label.setObjectName("label")
+
+        # add label to main window
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        # set qmovie as label
+        #self.movie = QtGui.QMovie("../loader.gif")
+        #self.label.setMovie(self.movie)
+        #self.movie.start()
+
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -254,9 +282,17 @@ class MainWindow(QtWidgets.QMainWindow):
             self.show_text_button.setEnabled(True)
 
     def _show_text_button_clicked(self):
-        idx = self.video_selector_combobox.text_box.currentIndex()
+        try:
+            idx = self.video_selector_combobox.text_box.currentIndex()
+            self.keywords_list_2.setText(self.videos[idx].correct_video_text)
 
-        self.keywords_list_2.setText(self.videos[idx].correct_video_text)
+        except Exception:
+            msg = QtWidgets.QMessageBox()
+            msg.setText("Sorry, an error occured")
+            msg.setInformativeText("Please, try again")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
+
     def _word_double_clicked(self, item):
         """
         Функция определяет действия после двойного нажатия мышью на слово в окне слов.
@@ -327,9 +363,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tb_question.setText(item.text())
 
     def _delete_ques_button_clicked(self):
-        idx = self.video_selector_combobox.text_box.currentIndex()
-        self.videos[idx].questions.remove(self.questions_list.currentItem().text())
-        self.questions_list.takeItem(self.questions_list.currentRow())
+        try:
+            idx = self.video_selector_combobox.text_box.currentIndex()
+            self.videos[idx].questions.remove(self.questions_list.currentItem().text())
+            self.questions_list.takeItem(self.questions_list.currentRow())
+
+        except Exception:
+            msg = QtWidgets.QMessageBox()
+            msg.setText("Sorry, an error occured")
+            msg.setInformativeText("Please, try again")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
+
 
     def _add_button_clicked(self):
         """
@@ -345,8 +390,32 @@ class MainWindow(QtWidgets.QMainWindow):
         url, ok = QtWidgets.QInputDialog.getText(self, 'Добавить видео', 'Скопируйте ссылку с видео:')
 
         if ok:
-            self.videos.add_video(url)
-            self._videos_selector_update(len(self.videos) - 1)
+
+            window = QtWidgets.QMainWindow()
+            window.setWindowTitle("Please, wait")
+            ui = Ui_MainWindow()
+            ui.setupUi(window)
+            window.show()
+
+            try:
+                self.videos.add_video(url)
+                self._videos_selector_update(len(self.videos) - 1)
+
+            except Exception:
+                msg = QtWidgets.QMessageBox()
+                msg.setText("Sorry, an error occured")
+                msg.setInformativeText("Please, try again")
+                msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+                msg.exec_()
+
+            window.close()
+
+        else:
+            msg = QtWidgets.QMessageBox()
+            msg.setText("Sorry, an error occured")
+            msg.setInformativeText("Please, try again")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
 
     def _remove_button_clicked(self):
         """
@@ -400,7 +469,11 @@ class MainWindow(QtWidgets.QMainWindow):
     def _button_get_questions_clicked(self):
         questions = question_maker.get_questions(self.tb_sentence.toPlainText())
         if len(questions) == 0:
-            self.tb_question.setText("Sorry, we cant make a question")
+            msg = QtWidgets.QMessageBox()
+            msg.setText("Sorry, we can't create question")
+            msg.setInformativeText("Please, try another sentence")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
         else:
             self.tb_question.setText(questions[0])
 
