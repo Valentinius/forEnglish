@@ -14,25 +14,25 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        #MainWindow.resize(250, 250)
+        MainWindow.resize(810, 290)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
         # create label
         self.label = QtWidgets.QLabel(self.centralwidget)
         #self.label.setGeometry(QtCore.QRect(200, 200, 200, 200))
-        #self.label.setMinimumSize(QtCore.QSize(200, 200))
-        #self.label.setMaximumSize(QtCore.QSize(200, 200))
-        self.label.setText("Please, wait while we loading video data")
+        self.label.setMinimumSize(QtCore.QSize(800, 285))
+        self.label.setMaximumSize(QtCore.QSize(800, 285))
+        #self.label.setText("Please, wait while we're loading video data")
         self.label.setObjectName("label")
 
         # add label to main window
         MainWindow.setCentralWidget(self.centralwidget)
 
-        # set qmovie as label
-        #self.movie = QtGui.QMovie("../loader.gif")
-        #self.label.setMovie(self.movie)
-        #self.movie.start()
+        #set qmovie as label
+        self.movie = QtGui.QMovie("loader.gif")
+        self.label.setMovie(self.movie)
+        self.movie.start()
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
