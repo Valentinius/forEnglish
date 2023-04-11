@@ -1,3 +1,5 @@
+import io
+
 from PySide2 import QtCore, QtGui, QtWidgets
 from custom_objects import EditPanel
 from videos import Videos
@@ -30,7 +32,8 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         #set qmovie as label
-        self.movie = QtGui.QMovie("loader.gif")
+
+        self.movie = QtGui.QMovie("windows/loader.gif")
         self.label.setMovie(self.movie)
         self.movie.start()
 
