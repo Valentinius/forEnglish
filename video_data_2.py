@@ -2,18 +2,12 @@ import re
 
 from youtube_transcript_api import YouTubeTranscriptApi
 from pytube import YouTube
-#from nltk.stem import PorterStemmer
 from nltk.corpus import stopwords
 from nltk import tokenize
-#import nltk
-import language_tool_python
+
 import requests
-import json
 
-#from gingerit.gingerit import GingerIt
 import numpy as np
-
-my_tool = language_tool_python.LanguageTool('en-EN')
 
 class VideoData2:
     def __init__(self, url: str):
@@ -40,7 +34,7 @@ class VideoData2:
 
         :return:
         """
-        text = "";
+        text = ""
         for i in self.subs:
             text += i['text'] + ' '
         return text
@@ -67,9 +61,9 @@ class VideoData2:
 
         #correct_text = json.loads(response.text)
 
-        result = my_tool.correct(res.text)
+        #result = my_tool.correct(res.text)
         #result = correct_text['data']['text']
-        return result
+        return res.text
 
     #def _get_correct_video_sentences(self):
     #    parser = GingerIt()

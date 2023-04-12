@@ -89,6 +89,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.show_text_button = QtWidgets.QPushButton()
         self.show_text_button.setText("Show all text")
 
+        self.show_timestamps = QtWidgets.QPushButton()
+        self.show_timestamps.setText("Show timestamps")
+
 
         settings_splitter_layout.addWidget(self.video_selector_combobox, 0, 0, 2, 1)
         settings_splitter_layout.addWidget(all_buttons_loader, 2, 0)
@@ -147,7 +150,9 @@ class MainWindow(QtWidgets.QMainWindow):
         windows_splitter.addWidget(words_splitter)
 
         self.show_text_button.setEnabled(False)
+        self.show_timestamps.setEnabled(False)
         windows_splitter.addWidget(self.show_text_button)
+        windows_splitter.addWidget(self.show_timestamps)
 
         main_layout.addWidget(windows_splitter, 2)
 
@@ -260,6 +265,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.questions_list.itemClicked.connect(self._ques_clicked)
         self.delete_ques_button.clicked.connect(self._delete_ques_button_clicked)
         self.show_text_button.clicked.connect(self._show_text_button_clicked)
+        self.show_timestamps.clicked.connect(self._show_timestamps_button_clicked)
 
     def _video_changed(self, idx):
         """
@@ -283,11 +289,13 @@ class MainWindow(QtWidgets.QMainWindow):
             self.questions_list.addItems(self.videos[idx].questions)
             self.delete_ques_button.setEnabled(False)
             self.show_text_button.setEnabled(True)
+            self.show_timestamps.setEnabled(True)
 
     def _show_text_button_clicked(self):
         try:
             idx = self.video_selector_combobox.text_box.currentIndex()
             self.keywords_list_2.setText(self.videos[idx].correct_video_text)
+            #self.keywords_list_2.setText(self.videos[idx].timestamps)
 
         except Exception:
             msg = QtWidgets.QMessageBox()
@@ -295,6 +303,53 @@ class MainWindow(QtWidgets.QMainWindow):
             msg.setInformativeText("Please, try again")
             msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
             msg.exec_()
+
+    def _show_timestamps_button_clicked(self):
+        try:
+            idx = self.video_selector_combobox.text_box.currentIndex()
+
+            subs = self.videos[idx].subs
+
+            dialog = QtWidgets.QDialog()
+            dialog.setWindowTitle("Timestamps")
+            layout = QtWidgets.QGridLayout()
+
+            table = QtWidgets.QTableWidget()
+
+            row_count = (len(subs))
+            column_count = (len(subs[0]))
+
+            table.setColumnCount(column_count)
+            table.setRowCount(row_count)
+
+            table.setHorizontalHeaderLabels((list(subs[0].keys())))
+
+            for row in range(row_count):  # add items from array to QTableWidget
+                for column in range(column_count):
+                    item = (list(subs[row].values())[column])
+                    table.setItem(row, column, QtWidgets.QTableWidgetItem(str(item)))
+
+            table.setMinimumHeight(400)
+            table.setMinimumWidth(600)
+            table.resizeColumnsToContents()
+            table.resizeRowsToContents()
+
+            layout.addWidget(table)
+            dialog.setLayout(layout)
+            dialog.exec_()
+
+        except Exception:
+            msg = QtWidgets.QMessageBox()
+            msg.setText("Sorry, an error occured")
+            msg.setInformativeText("Please, try again")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            msg.exec_()
+
+        #layout.addWidget(tableWidget, 0, 0)
+            #wind.setLayout(layout)
+
+            #self.keywords_list_2.setText(self.videos[idx].correct_video_text)
+            #self.keywords_list_2.setText(self.videos[idx].timestamps)
 
     def _word_double_clicked(self, item):
         """
